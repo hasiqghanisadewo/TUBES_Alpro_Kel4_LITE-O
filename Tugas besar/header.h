@@ -5,22 +5,25 @@
 #include <string.h>
 #include <time.h>
 
-// --- KONSTANTA GLOBAL ---
+// Konstanta yang akan dipakai
 #define MAX_HADIAH 100
 #define MAX_GERAK 100
+#define Selesai "##"
 
-// --- STRUKTUR ---
+// Struktur buat penempatan hadiah
 typedef struct {
     int x;
     int y;
     char nama[50];
     int skor;
 } Hadiah;
-
+// struktur buat gerak nanti
 typedef struct {
     int x;
     int y;
 } Gerak;
+// fungsi dari pdf buat animasi nanti
+void wait(float x);
 
 
 #endif
