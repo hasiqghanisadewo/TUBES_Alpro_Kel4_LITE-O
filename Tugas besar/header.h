@@ -10,6 +10,10 @@
 #define MAX_GERAK 100
 #define Selesai "##"
 
+// Ukuran papan simulasi
+#define panjang_papan 20
+#define lebar_papan 50
+
 // Struktur buat penempatan hadiah
 typedef struct {
     int x;
@@ -25,5 +29,18 @@ typedef struct {
 // fungsi dari pdf buat animasi nanti
 void wait(float x);
 
+//  Mesin abstark
+void start(char* nama_file);
+void maju(char* kata_output);
+int endKata();
 
+// membaca file dari file .txt yang akan didapatkan setelah input disimpan
+void bacaFileHadiah(Hadiah list_hadiah[], int *jumlah_hadiah);
+void bacaFileGerak(Gerak list_gerak[], int *jumlah_gerak);
+
+// buat menu nanti
+void menu();
+
+
+//nyimpen input nanti dari fungsi input
 #endif
