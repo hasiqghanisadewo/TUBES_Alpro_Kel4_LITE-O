@@ -7,7 +7,7 @@ void start(char* nama_file) {
     f = fopen(nama_file, "r");
 }
 
-void maju(char* kata_output) {
+void baca(char* kata_output) {
     if (f != NULL && fscanf(f, "%s", kata_output) == 1) {
 
     } else {
