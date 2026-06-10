@@ -33,7 +33,7 @@ void wait(float x);
 
 //  Mesin abstark
 void start(char* nama_file);
-void maju(char* kata_output);
+void baca(char* kata_output);
 int endKata();
 
 
