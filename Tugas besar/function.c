@@ -3,41 +3,19 @@
 #include "header.h"
 
 FILE *f; 
-
-// === BAGIAN DARI TEMPLATE TIM ===
-
+// bagian 1 Mesin Abstrak
 void start(char* nama_file) {
     f = fopen(nama_file, "r");
 }
 
-void maju(char* kata_output) {
+void baca(char* kata_output) {
     if (f != NULL && fscanf(f, "%s", kata_output) == 1) {
     } else {
         strcpy(kata_output, "Selesai"); // Ditambahkan tanda kutip agar dibaca sebagai string
     }
 }
 
-
-// === BAGIAN 4 - DATA SORTER & VALIDASI ===
-
-void urutkanHadiah(Hadiah arr[], int n)
-{
-    int i, j;
-    Hadiah temp;
-
-    for(i = 0; i < n - 1; i++)
-    {
-        for(j = 0; j < n - i - 1; j++)
-        {
-            if(arr[j].skor < arr[j + 1].skor)
-            {
-                temp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = temp;
-            }
-        }
-    }
-}
+// Bagian 2 Fungsi Hadiah
 
 void bacaFileHadiah(Hadiah list_hadiah[], int *jumlah_hadiah) {
     start("thadiah.txt");
@@ -55,15 +33,15 @@ void bacaFileHadiah(Hadiah list_hadiah[], int *jumlah_hadiah) {
     printf("| %-5s | %-5s | %-20s | %-6s |\n", "X", "Y", "Nama", "Skor");
     printf("-------------------------------------------------\n");
 
-    maju(kata);
+    baca(kata);
 
     while (strcmp(kata, Selesai) != 0) {
         list_hadiah[i].x = atoi(kata);     
-        maju(kata);
+        baca(kata);
         list_hadiah[i].y = atoi(kata);        
-        maju(kata);
+        baca(kata);
         strcpy(list_hadiah[i].nama, kata);        
-        maju(kata);
+        baca(kata);
         list_hadiah[i].skor = atoi(kata);
 
         printf("| %-5d | %-5d | %-20s | %-6d |\n",
@@ -79,7 +57,7 @@ void bacaFileHadiah(Hadiah list_hadiah[], int *jumlah_hadiah) {
             break;
         }
 
-        maju(kata);
+        baca(kata);
     }
     printf("-------------------------------------------------\n");
 
@@ -128,20 +106,20 @@ void menuTambahHadiah() {
 
     if (f != NULL) {
         char kata[50];
-        maju(kata);
+        baca(kata);
 
         while (strcmp(kata, Selesai) != 0) {
             char x_str[50], y_str[50], nama_str[50], skor_str[50];
 
             strcpy(x_str, kata);
-            maju(y_str);
-            maju(nama_str);
-            maju(skor_str);
+            baca(y_str);
+            baca(nama_str);
+            baca(skor_str);
 
             fprintf(f_new, "%s %s %s %s\n",
                     x_str, y_str, nama_str, skor_str);
 
-            maju(kata);
+            baca(kata);
         }
 
         fclose(f);
@@ -164,7 +142,7 @@ void menuTambahHadiah() {
     remove("thadiah.txt");
     rename("temp.txt", "thadiah.txt");
 }
-
+// Bagian 3 Fungsi Gerak 
 #define NAMA_FILE_GERAK "tgerak.txt"    // tgerak.txt sebagai NAMA_FILE_GERAK
 
 // membaca gerak dari file
@@ -229,6 +207,28 @@ void tampilTabelGerak(Gerak arr[], int n) {
     }
     printf("----------\n");
 }
+
+// === BAGIAN 4 - DATA SORTER & VALIDASI ===a
+
+void urutkanHadiah(Hadiah arr[], int n)
+{
+    int i, j;
+    Hadiah temp;
+
+    for(i = 0; i < n - 1; i++)
+    {
+        for(j = 0; j < n - i - 1; j++)
+        {
+            if(arr[j].skor < arr[j + 1].skor)
+            {
+                temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+
 // Untuk Validasi apakah koordinat masih berada di dalam papan
 int cekValidasiGerak(int x, int y)
 {
