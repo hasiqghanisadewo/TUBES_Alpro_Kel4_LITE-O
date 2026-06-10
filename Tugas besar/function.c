@@ -5,10 +5,84 @@
 
 FILE *f; 
 
+void start(char* nama_file) {
+    f = fopen(nama_file, "r");
+}
+
+void maju(char* kata_output) {
+    if (f != NULL && fscanf(f, "%s", kata_output) == 1) {
+    } else {
+        strcpy(kata_output, Selesai);
+    }
+}
+
+void bacaFileHadiah(Hadiah list_hadiah[], int *jumlah_hadiah) {
+    start("thadiah.txt");
+
+    if (f == NULL) {
+        printf("\nBelum ada data hadiah.\n");
+        *jumlah_hadiah = 0;
+        return;
+    }
+
+    int i = 0;
+    char kata[50];
+
+    printf("\n-------------------------------------------------\n");
+    printf("| %-5s | %-5s | %-20s | %-6s |\n", "X", "Y", "Nama", "Skor");
+    printf("-------------------------------------------------\n");
+
+    maju(kata);
+
+    while (strcmp(kata, Selesai) != 0) {
+        list_hadiah[i].x = atoi(kata);     
+        maju(kata);
+        list_hadiah[i].y = atoi(kata);        
+        maju(kata);
+        strcpy(list_hadiah[i].nama, kata);        
+        maju(kata);
+        list_hadiah[i].skor = atoi(kata);
+
+        printf("| %-5d | %-5d | %-20s | %-6d |\n",
+               list_hadiah[i].x,
+               list_hadiah[i].y,
+               list_hadiah[i].nama,
+               list_hadiah[i].skor);
+
+        i++;
+
+        if (i >= MAX_HADIAH) {
+            printf("Kapasitas memori penuh, sebagian data tidak termuat.\n");
+            break;
+        }
+
+        maju(kata);
+    }
+    printf("-------------------------------------------------\n");
+
+    *jumlah_hadiah = i;
+    fclose(f);
+}
+
 void menuTambahHadiah() {
+    Hadiah daftar[MAX_HADIAH];
+    int total = 0;
+    char jawab;
+
+    // tampilkan hadiah yang sudah ada
+    bacaFileHadiah(daftar, &total);
+
+    printf("\nIngin mengisi hadiah baru? (Y/T): ");
+    scanf(" %c", &jawab);
+
+    if (jawab != 'Y' && jawab != 'y') {
+        printf("Penambahan hadiah dibatalkan.\n");
+        return;
+    }
+
     Hadiah baru;
 
-    printf("------ Tambah Hadiah -----\n");
+    printf("\n------ Tambah Hadiah -----\n");
     printf("Masukkan koordinat x hadiah: ");
     scanf("%d", &baru.x);
     printf("Masukkan koordinat y hadiah: ");
@@ -18,85 +92,54 @@ void menuTambahHadiah() {
     printf("Masukkan skor hadiah: ");
     scanf("%d", &baru.skor);
 
-FILE *f_old = fopen("thadiah.txt", "r");
+    while (getchar() != '\n');
+
+    start("thadiah.txt");
     FILE *f_new = fopen("temp.txt", "w");
 
     if (f_new == NULL) {
-        printf("Gagal membuka file sementara.\n");
-        if (f_old) fclose(f_old);
+        printf("Gagal membuka file.\n");
+        if (f) fclose(f);
         return;
     }
 
-    // Jika file lama sudah ada, salin semua isinya KECUALI baris yang berisi "##"
-    if (f_old != NULL) {
-        char buffer[256];
-        while (fgets(buffer, sizeof(buffer), f_old) != NULL) {
-            // Jika baris mengandung kata "##", maka dilewati (tidak disalin)
-            if (strstr(buffer, Selesai) != NULL) {
-                continue;
-            }
-            fputs(buffer, f_new);
+    if (f != NULL) {
+        char kata[50];
+        maju(kata);
+
+        while (strcmp(kata, Selesai) != 0) {
+            char x_str[50], y_str[50], nama_str[50], skor_str[50];
+
+            strcpy(x_str, kata);
+            maju(y_str);
+            maju(nama_str);
+            maju(skor_str);
+
+            fprintf(f_new, "%s %s %s %s\n",
+                    x_str, y_str, nama_str, skor_str);
+
+            maju(kata);
         }
-        fclose(f_old);
+
+        fclose(f);
     }
 
-    // Tulis data hadiah baru ke file sementara
-    fprintf(f_new, "%d %d %s %d\n", baru.x, baru.y, baru.nama, baru.skor);
-    
-    // Tulis penanda selesai HANYA di baris paling bawah file sementara
-    fprintf(f_new, "%s %s %s %s\n", Selesai, Selesai, Selesai, Selesai);
+    fprintf(f_new, "%d %d %s %d\n",
+            baru.x,
+            baru.y,
+            baru.nama,
+            baru.skor);
+
+    fprintf(f_new, "%s %s %s %s\n",
+            Selesai,
+            Selesai,
+            Selesai,
+            Selesai);
+
     fclose(f_new);
 
     remove("thadiah.txt");
     rename("temp.txt", "thadiah.txt");
-
-}
-
-void bacaFileHadiah(Hadiah list_hadiah[], int *jumlah_hadiah) {
-    FILE *f = fopen("thadiah.txt", "r");
-
-    if (f == NULL) {
-        printf("\nBelum ada data hadiah.\n");
-        *jumlah_hadiah = 0;
-        return;
-    }
-
-    char buffer[256];
-    int i = 0;
-
-    printf("-------------------------------------------------\n");
-    printf("| %-5s | %-5s | %-20s | %-6s |\n", "X", "Y", "Nama Hadiah", "Skor");
-    printf("-------------------------------------------------\n");
-
-    while (fgets(buffer, sizeof(buffer), f) != NULL) {
-        if (sscanf(buffer, " %d %d %49s %d",
-                   &list_hadiah[i].x,
-                   &list_hadiah[i].y,
-                   list_hadiah[i].nama,
-                   &list_hadiah[i].skor) == 4) {
-
-            printf("| %-5d | %-5d | %-20s | %-6d |\n",
-                   list_hadiah[i].x,
-                   list_hadiah[i].y,
-                   list_hadiah[i].nama,
-                   list_hadiah[i].skor);
-
-            i++;
-            if (i >= MAX_HADIAH) break;
-        }
-    }
-    printf("-------------------------------------------------\n");
-
-    *jumlah_hadiah = i;
-    fclose(f);
-}
-
-void maju(char* kata_output) {
-    if (f != NULL && fscanf(f, "%s", kata_output) == 1) {
-
-    } else {
-        strcpy(kata_output, Selesai);
-    }
 }
 
 #define NAMA_FILE_GERAK "tgerak.txt"    // tgerak.txt sebagai NAMA_FILE_GERAK
