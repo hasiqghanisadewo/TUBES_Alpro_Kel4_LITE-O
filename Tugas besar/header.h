@@ -21,11 +21,13 @@ typedef struct {
     char nama[50];
     int skor;
 } Hadiah;
+
 // struktur buat gerak nanti
 typedef struct {
     int x;
     int y;
 } Gerak;
+
 // fungsi dari pdf buat animasi nanti
 void wait(float x);
 
