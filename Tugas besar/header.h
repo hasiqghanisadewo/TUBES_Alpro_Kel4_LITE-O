@@ -37,6 +37,30 @@ void baca(char* kata_output);
 int endKata();
 
 
+// FITUR HADIAH
+
+
+void bacaFileHadiah(Hadiah list_hadiah[], int *jumlah_hadiah);
+void menuTambahHadiah();
+
+
+// FITUR GERAK
+
+
+int bacaGerakDariFile(FILE *fgerak, Gerak *g);
+void bacaGerakSemua(Gerak arr[], int *n);
+void tulisSemuaGerak(Gerak arr[], int n);
+void tampilTabelGerak(Gerak arr[], int n);
+
+
+// SORTING
+
+void urutkanHadiah(Hadiah arr[], int n);
+
+// VALIDASI
+
+int cekValidasiGerak(int x, int y);
+
 // buat menu nanti
 void menu();
 
