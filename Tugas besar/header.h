@@ -34,9 +34,6 @@ void start(char* nama_file);
 void maju(char* kata_output);
 int endKata();
 
-// membaca file dari file .txt yang akan didapatkan setelah input disimpan
-void bacaFileHadiah(Hadiah list_hadiah[], int *jumlah_hadiah);
-void bacaFileGerak(Gerak list_gerak[], int *jumlah_gerak);
 
 // buat menu nanti
 void menu();
