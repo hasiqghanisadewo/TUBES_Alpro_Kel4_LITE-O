@@ -17,14 +17,14 @@ void maju(char* kata_output) {
     }
 }
 
-#define NAMA_FILE_GERAK "tgerak.txt"    // tgerak.txt sebagai NAMA_FILE_GERAK
+#define FILE_GERAK "tgerak.txt"    // tgerak.txt sebagai NAMA_FILE_GERAK
 
 // membaca semua data gerak dari file tgerak.txt
-void bacaGerakSemua(Gerak arr[], int *n) {
-    FILE *fgerak = fopen(NAMA_FILE_GERAK, "r"); // membuka file dengan izin read
-    *n = 0; // reset nilai *n jumlah data gerak
-    
-    if (fgerak == NULL) {   // jika file gagal dibuka / kosong, langsung kembali
+void bacaGerak(Gerak arr[], int *n) {
+    FILE *fgerak = fopen(FILE_GERAK, "r");  // membuka file tgerak.txt dengan izin read
+    *n = 0;     // reset nilai *n (jumlah data gerak)
+
+    if (fgerak == NULL) {   // jika file kosong, langsung kembali
         return;
     }
 
@@ -34,21 +34,18 @@ void bacaGerakSemua(Gerak arr[], int *n) {
     while (*n < MAX_GERAK) {
         // membaca koordinat x
         if (fscanf(fgerak, "%99s", tamp) != 1) {
-            break; // keluar dari loop jika file habis atau gagal membaca
+            break;
         }
         arr[*n].x = atoi(tamp);
 
         // membaca koordinat y
         if (fscanf(fgerak, "%99s", tamp) != 1) {
-            break; // Keluar dari loop jika koordinat y tidak lengkap
+            break;
         }
         arr[*n].y = atoi(tamp);
 
-        // jika pasangan x dan y berhasil dibaca, naikkan count data
-        (*n)++;
+        (*n)++; // jika pasangan x dan y berhasil dibaca, count naik
     }
-
-    fclose(fgerak); // menutup file
 }
 
 // menyimpan semua data koordinat ke file
