@@ -11,7 +11,7 @@ void start(char* nama_file) {
 void baca(char* kata_output) {
     if (f != NULL && fscanf(f, "%s", kata_output) == 1) {
     } else {
-        strcpy(kata_output, "Selesai"); // Ditambahkan tanda kutip agar dibaca sebagai string
+        strcpy(kata_output, Selesai); // Ditambahkan tanda kutip agar dibaca sebagai string
     }
 }
 
@@ -147,7 +147,7 @@ void menuTambahHadiah() {
 
 // membaca semua data gerak dari file tgerak.txt
 void bacaGerak(Gerak arr[], int *n) {
-    FILE *fgerak = fopen(FILE_GERAK, "r");  // membuka file tgerak.txt dengan izin read
+    FILE *fgerak = fopen(NAMA_FILE_GERAK, "r");  // membuka file tgerak.txt dengan izin read
     *n = 0;     // reset nilai *n (jumlah data gerak)
 
     if (fgerak == NULL) {   // jika file kosong, langsung kembali
@@ -176,7 +176,7 @@ void bacaGerak(Gerak arr[], int *n) {
 
 // menyimpan semua data koordinat ke file
 void tulisSemuaGerak(Gerak arr[], int n) {
-    FILE *fgerak = fopen(FILE_GERAK, "w"); // membuka file tgerak.txt
+    FILE *fgerak = fopen(NAMA_FILE_GERAK, "w"); // membuka file tgerak.txt
     if (fgerak == NULL) {   // jika file kosong
         printf("Error: tidak bisa membuka %s\n", NAMA_FILE_GERAK);
         return; // kembali
