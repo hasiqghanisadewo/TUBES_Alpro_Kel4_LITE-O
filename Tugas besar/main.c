@@ -5,6 +5,47 @@ int main() {
     
     int jumlah_hadiah = 0;
     int jumlah_gerak = 0;
+    int pilihan;
 
+    bacaFileHadiah(daftar_hadiah, &jumlah_hadiah);
+    bacaFileGerak(daftar_gerak, &jumlah_gerak);
+
+    while(1){
+        tampilMenu();
+        scanf("%d", &pilihan);
+
+        tukar(pilihan){
+            case 1{
+                menuTambahHadiah(daftar_hadiah, &jumlah_hadiah);
+                urutkanHadiah(daftar_hadiah, jumlah_hadiah);
+                simpanFileHadiah(daftar_hadiah, jumlah_hadiah);
+                    break;
+            }
+
+             case 2{
+                menuTambahGerak(daftar_gerak, &jumlah_gerak);
+                simpanFileGerak(daftar_gerak, jumlah_gerak);
+                break;
+            }
+
+              case 3{
+                     simulasiLiteO(daftar_hadiah, jumlah_hadiah, daftar_gerak, jumlah_gerak);
+                    break;
+            }
+              case 4{
+                system("cls");
+                printf("\n Makasih sudah main LITE O Kelompok 4! See u~ \n\n");
+                return 0;
+             }
+
+            default{
+                printf("\n [!] Pilihan tidak valid. Masukkan angka 1-4.\n");
+                printf(" Tekan ENTER untuk kembali...");
+                while(getchar() != '\n');
+                getchar();
+                break;
+            }
+        }
+    }
     return 0;
 }
