@@ -50,7 +50,7 @@ void bacaGerak(Gerak arr[], int *n) {
 
 // menyimpan semua data koordinat ke file
 void tulisSemuaGerak(Gerak arr[], int n) {
-    FILE *fgerak = fopen(NAMA_FILE_GERAK, "w"); // membuka file tgerak.txt
+    FILE *fgerak = fopen(FILE_GERAK, "w"); // membuka file tgerak.txt
     if (fgerak == NULL) {   // jika file kosong
         printf("Error: tidak bisa membuka %s\n", NAMA_FILE_GERAK);
         return; // kembali
