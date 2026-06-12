@@ -145,42 +145,38 @@ void menuTambahHadiah() {
 // Bagian 3 Fungsi Gerak 
 #define NAMA_FILE_GERAK "tgerak.txt"    // tgerak.txt sebagai NAMA_FILE_GERAK
 
-// membaca gerak dari file
-int bacaGerakDariFile(FILE *fgerak, Gerak *g) {
-    char tamp[100]; // tampungan sementara untuk teks yang sedang dibaca
-    
-    // membaca 1 data x
-    if (fscanf(fgerak, "%99s", tamp) != 1) {
-        return 0;   // mengembalikan nilai 0 jika tidak berhasil dibaca
-    }
-    g->x = atoi(tamp);
-    
-    // membaca 1 data y
-    if (fscanf(fgerak, "%99s", tamp) != 1) {
-        return 0; 
-    }
-    g->y = atoi(tamp);
-    
-    return 1; // berhasil membaca sepasang koordinat x dan y jika mengembalikan nilai 1
-}
+// membaca semua data gerak dari file tgerak.txt
+void bacaGerak(Gerak arr[], int *n) {
+    FILE *fgerak = fopen(FILE_GERAK, "r");  // membuka file tgerak.txt dengan izin read
+    *n = 0;     // reset nilai *n (jumlah data gerak)
 
-// membaca semua gerak
-void bacaGerakSemua(Gerak arr[], int *n) {
-    FILE *fgerak = fopen(NAMA_FILE_GERAK, "r"); // membuka file dengan izin read
-    *n = 0; // reset nilai *n jumlah data gerak
     if (fgerak == NULL) {   // jika file kosong, langsung kembali
         return;
     }
 
-    // selama data gerak dibaca, nilai *n bertambah terus
-    while (*n < MAX_GERAK && bacaGerakDariFile(fgerak, &arr[*n]))
-        (*n)++;
-    fclose(fgerak); // menutup file tgerak.txt
+    char tamp[100]; // tampungan sementara untuk teks yang sedang dibaca
+
+    // selama jumlah data belum melebihi MAX_GERAK
+    while (*n < MAX_GERAK) {
+        // membaca koordinat x
+        if (fscanf(fgerak, "%99s", tamp) != 1) {
+            break;
+        }
+        arr[*n].x = atoi(tamp);
+
+        // membaca koordinat y
+        if (fscanf(fgerak, "%99s", tamp) != 1) {
+            break;
+        }
+        arr[*n].y = atoi(tamp);
+
+        (*n)++; // jika pasangan x dan y berhasil dibaca, count naik
+    }
 }
 
 // menyimpan semua data koordinat ke file
 void tulisSemuaGerak(Gerak arr[], int n) {
-    FILE *fgerak = fopen(NAMA_FILE_GERAK, "w"); // membuka file tgerak.txt
+    FILE *fgerak = fopen(FILE_GERAK, "w"); // membuka file tgerak.txt
     if (fgerak == NULL) {   // jika file kosong
         printf("Error: tidak bisa membuka %s\n", NAMA_FILE_GERAK);
         return; // kembali
