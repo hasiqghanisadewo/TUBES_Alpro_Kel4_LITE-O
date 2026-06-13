@@ -184,7 +184,7 @@ void tulisSemuaGerak(Gerak arr[], int n) {
     
     // mencetak semua data koordinat dari memori ke file
     for (int i = 0; i < n; i++) {
-        fprintf(f, "%d %d\n", arr[i].x, arr[i].y); 
+        fprintf(fgerak, "%d %d\n", arr[i].x, arr[i].y); 
     }
     
     fclose(fgerak);
