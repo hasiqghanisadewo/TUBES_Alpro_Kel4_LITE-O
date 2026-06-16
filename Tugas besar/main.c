@@ -8,7 +8,7 @@ int main() {
     int pilihan;
 
     bacaFileHadiah(daftar_hadiah, &jumlah_hadiah);
-    bacaFileGerak(daftar_gerak, &jumlah_gerak);
+    bacaGerak(daftar_gerak, &jumlah_gerak);
 
     while(1){
         tampilMenu();
