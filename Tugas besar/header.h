@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <time.h>
 
 // Konstanta yang akan dipakai
@@ -33,9 +34,33 @@ void wait(float x);
 
 //  Mesin abstark
 void start(char* nama_file);
-void maju(char* kata_output);
+void baca(char* kata_output);
 int endKata();
 
+
+// FITUR HADIAH
+
+
+void bacaFileHadiah(Hadiah list_hadiah[], int *jumlah_hadiah);
+void menuTambahHadiah();
+
+
+// FITUR GERAK
+
+
+int bacaGerakDariFile(FILE *fgerak, Gerak *g);
+void bacaGerakSemua(Gerak arr[], int *n);
+void tulisSemuaGerak(Gerak arr[], int n);
+void tampilTabelGerak(Gerak arr[], int n);
+
+
+// SORTING
+
+void urutkanHadiah(Hadiah arr[], int n);
+
+// VALIDASI
+
+int cekValidasiGerak(int x, int y);
 
 // buat menu nanti
 void menu();
