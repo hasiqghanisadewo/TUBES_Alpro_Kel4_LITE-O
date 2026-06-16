@@ -142,8 +142,9 @@ void menuTambahHadiah() {
     remove("thadiah.txt");
     rename("temp.txt", "thadiah.txt");
 }
-// Bagian 3 Fungsi Gerak 
-#define NAMA_FILE_GERAK "tgerak.txt"    // tgerak.txt sebagai NAMA_FILE_GERAK
+// ---- BAGIAN 3: FUNGSI GERAK
+
+#define FILE_GERAK "tgerak.txt"    // tgerak.txt sebagai FILE_GERAK
 
 // membaca semua data gerak dari file tgerak.txt
 void bacaGerak(Gerak arr[], int *n) {
@@ -204,6 +205,29 @@ void tampilTabelGerak(Gerak arr[], int n) {
             printf("%-5d %-5d\n", arr[i].x, arr[i].y);
     }
     printf("----------\n");
+}
+
+void inputGerak(int x, int y) {
+    Gerak temp_arr[MAX_GERAK];
+    int jumlah_data = 0;
+
+    // baca data koordinat dari file ke memori
+    bacaGerak(temp_arr, &jumlah_data);
+
+    // memastikan kondisi array masih kosong atau sudah penuh
+    if (jumlah_data >= MAX_GERAK) {
+        printf("Gagal menambahkan gerak: memori sudah penuh.\n");
+        return;
+    }
+
+    // menambahkan koordinat baru ke index paling akhir
+    temp_arr[jumlah_data].x = x;
+    temp_arr[jumlah_data].y = y;
+    jumlah_data++;  // naikkan count jumlah data
+
+    // menulis kembali semua data ke dalam file
+    tulisSemuaGerak(temp_arr, jumlah_data);
+    printf("Koordinat baru berhasil ditambahkan: %d, %d\n", x, y);
 }
 
 // === BAGIAN 4 - DATA SORTER & VALIDASI ===a
