@@ -148,7 +148,7 @@ void menuTambahHadiah() {
 
 // membaca semua data gerak dari file tgerak.txt
 void bacaGerak(Gerak arr[], int *n) {
-    FILE *fgerak = fopen(NAMA_FILE_GERAK, "r");  // membuka file tgerak.txt dengan izin read
+    FILE *fgerak = fopen(FILE_GERAK, "r");  // membuka file tgerak.txt dengan izin read
     *n = 0;     // reset nilai *n (jumlah data gerak)
 
     if (fgerak == NULL) {   // jika file kosong, langsung kembali
