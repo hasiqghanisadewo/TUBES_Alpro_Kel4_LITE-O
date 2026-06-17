@@ -349,3 +349,12 @@ void tampilMenu() {
     printf("\n");
     printf("  >> Pilih menu (1-4): ");
 }
+
+// Taruh ini di paling bawah function.c
+void simulasiLiteO(Hadiah list_hadiah[], int jh, Gerak list_gerak[], int jg) {
+    printf("\n=== SIMULASI LITE O ===");
+    printf("\n[Sistem] Fungsi simulasi masih kosong/dalam pengembangan.\n");
+    printf("Tekan ENTER untuk kembali ke menu...");
+    while(getchar() != '\n');
+    getchar();
+}
