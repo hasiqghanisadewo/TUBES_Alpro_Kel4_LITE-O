@@ -11,7 +11,7 @@ void start(char* nama_file) {
 void baca(char* kata_output) {
     if (f != NULL && fscanf(f, "%s", kata_output) == 1) {
     } else {
-        strcpy(kata_output, Selesai); // Ditambahkan tanda kutip agar dibaca sebagai string
+        strcpy(kata_output, Selesai); 
     }
 }
 
