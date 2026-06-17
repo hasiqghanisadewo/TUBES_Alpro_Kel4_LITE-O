@@ -23,48 +23,44 @@ typedef struct {
     int skor;
 } Hadiah;
 
-// struktur buat gerak nanti
+// Struktur buat gerak
 typedef struct {
     int x;
     int y;
 } Gerak;
 
-// fungsi dari pdf buat animasi nanti
+// Fungsi animasi dari pdf
 void wait(float x);
 
-//  Mesin abstark
+// Mesin Abstrak
 void start(char* nama_file);
 void baca(char* kata_output);
 int endKata();
 
 
 // FITUR HADIAH
-
-
 void bacaFileHadiah(Hadiah list_hadiah[], int *jumlah_hadiah);
 void menuTambahHadiah();
 
 
-// FITUR GERAK
-
-
-int bacaGerakDariFile(FILE *fgerak, Gerak *g);
-void bacaGerakSemua(Gerak arr[], int *n);
+// FITUR GERAK (DISESUAIKAN TOTAL DENGAN FUNCTION.C LU)
+void bacaGerak(Gerak arr[], int *n);
 void tulisSemuaGerak(Gerak arr[], int n);
 void tampilTabelGerak(Gerak arr[], int n);
+void inputGerak(int x, int y);
+void menuTambahGerak(); // DISESUAIKAN: Jadi kosong tanpa parameter
 
 
 // SORTING
-
 void urutkanHadiah(Hadiah arr[], int n);
 
-// VALIDASI
 
+// VALIDASI
 int cekValidasiGerak(int x, int y);
 
-// buat menu nanti
-void menu();
 
+// UI & SIMULASI
+void tampilMenu(); // DISESUAIKAN: Mengganti 'void menu()' agar sinkron dengan function.c
+void simulasiLiteO(Hadiah list_hadiah[], int jh, Gerak list_gerak[], int jg); 
 
-//nyimpen input nanti dari fungsi input
 #endif

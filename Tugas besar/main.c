@@ -1,4 +1,5 @@
 #include "header.h"
+
 int main() {
     Hadiah daftar_hadiah[MAX_HADIAH];
     Gerak daftar_gerak[MAX_GERAK];
@@ -11,26 +12,26 @@ int main() {
     bacaGerak(daftar_gerak, &jumlah_gerak);
 
     while(1){
-        tampilMenu();
+        tampilMenu(); // Menggunakan tampilMenu() sesuai isi function.c lu
         scanf("%d", &pilihan);
 
         switch(pilihan){
             case 1:
                 menuTambahHadiah();
-                bacaFileHadiah(daftar_hadiah, jumlah_hadiah);
+                bacaFileHadiah(daftar_hadiah, &jumlah_hadiah);
                 urutkanHadiah(daftar_hadiah, jumlah_hadiah);
                 break;
             
-             case 2:
-                menuTambahGerak(daftar_gerak, &jumlah_gerak);
-                tulisSemuaGerak(daftar_gerak, jumlah_gerak);
+            case 2:
+                menuTambahGerak(); // DISESUAIKAN: Tanpa parameter, sesuai patokan function.c
+                bacaGerak(daftar_gerak, &jumlah_gerak); // Ditambahkan agar data di main.c langsung terupdate
                 break;
 
-              case 3:
+             case 3:
                  simulasiLiteO(daftar_hadiah, jumlah_hadiah, daftar_gerak, jumlah_gerak);
                  break;
             
-              case 4:
+             case 4:
                 system("cls");
                 printf("\n Makasih sudah main LITE O Kelompok 4! See u~ \n\n");
                 return 0;
