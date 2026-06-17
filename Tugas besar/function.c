@@ -142,8 +142,9 @@ void menuTambahHadiah() {
     remove("thadiah.txt");
     rename("temp.txt", "thadiah.txt");
 }
-// Bagian 3 Fungsi Gerak 
-#define NAMA_FILE_GERAK "tgerak.txt"    // tgerak.txt sebagai NAMA_FILE_GERAK
+// ---- BAGIAN 3: FUNGSI GERAK
+
+#define FILE_GERAK "tgerak.txt"    // tgerak.txt sebagai FILE_GERAK
 
 // membaca semua data gerak dari file tgerak.txt
 void bacaGerak(Gerak arr[], int *n) {
@@ -162,46 +163,110 @@ void bacaGerak(Gerak arr[], int *n) {
         if (fscanf(fgerak, "%99s", tamp) != 1) {
             break;
         }
+
+        // jika mesin kata meninggalkan token string Selesai
+        if (strcmp(tamp, "Selesai") == 0) break;
         arr[*n].x = atoi(tamp);
 
         // membaca koordinat y
         if (fscanf(fgerak, "%99s", tamp) != 1) {
             break;
         }
+        if (strcmp(tamp, "Selesai") == 0) break;
         arr[*n].y = atoi(tamp);
 
         (*n)++; // jika pasangan x dan y berhasil dibaca, count naik
     }
+
+    fclose(fgerak); // file ditutup
 }
 
-// menyimpan semua data koordinat ke file
+// menyimpan semua data koordinat dari array memori ke file
 void tulisSemuaGerak(Gerak arr[], int n) {
-    FILE *fgerak = fopen(NAMA_FILE_GERAK, "w"); // membuka file tgerak.txt
+    FILE *fgerak = fopen(FILE_GERAK, "w"); // membuka file tgerak.txt dengan izin tulis
     if (fgerak == NULL) {   // jika file kosong
-        printf("Error: tidak bisa membuka %s\n", NAMA_FILE_GERAK);
-        return; // kembali
+        printf("Error: tidak bisa dibuka %s\n", FILE_GERAK);
+        return;
     }
     
     // mencetak semua data koordinat dari memori ke file
     for (int i = 0; i < n; i++) {
-        fprintf(f, "%d %d\n", arr[i].x, arr[i].y); 
+        fprintf(fgerak, "%d %d\n", arr[i].x, arr[i].y); 
     }
     
-    fclose(fgerak);
+    fclose(fgerak); // file ditutup
 }
 
 // menampilkan data gerak O dalam bentuk tabel
 void tampilTabelGerak(Gerak arr[], int n) {
     printf("Isi gerak O saat ini:\n");
-    printf("%-5s %-5s\n", "x", "y");
+    printf("----------\n");
+    printf("| %-3s | %-3s |\n", "x", "y");
     printf("----------\n");
     if (n == 0) {   // jika  belum ada data gerak
-        printf("  (belum ada data gerak)\n");
-    } else {        // menampilkan data gerak secara perulangan
-        for (int i = 0; i < n; i++)
-            printf("%-5d %-5d\n", arr[i].x, arr[i].y);
+        printf("| (kosong)   |\n");
+    } else {        
+        for (int i = 0; i < n; i++) // menampilkan data gerak dengan perulangan
+            printf("| %-3d | %-3d |\n", arr[i].x, arr[i].y);
     }
     printf("----------\n");
+}
+
+// fungsi yang membantu menyisipkan koordinat baru lewat array
+void inputGerak(int x, int y) {
+    Gerak temp_arr[MAX_GERAK];
+    int jumlah_data = 0;
+
+    // baca data koordinat dari file ke memori
+    bacaGerak(temp_arr, &jumlah_data);
+
+    // memastikan kondisi array masih kosong atau sudah penuh
+    if (jumlah_data >= MAX_GERAK) {
+        printf("Gagal menambahkan gerak: memori sudah penuh.\n");
+        return;
+    }
+
+    // menambahkan koordinat baru ke index paling akhir
+    temp_arr[jumlah_data].x = x;
+    temp_arr[jumlah_data].y = y;
+    jumlah_data++;  // naikkan count jumlah data
+
+    // menulis kembali semua data ke dalam file
+    tulisSemuaGerak(temp_arr, jumlah_data);
+    printf("Koordinat baru berhasil ditambahkan: (%d, %d)\n", x, y);
+}
+
+// menu controlller untuk tambah gerak pada program
+void menuTambahGerak() {
+    Gerak daftar[MAX_GERAK];
+    int total = 0;
+    char pil;
+
+    // menampilkna table gerak saat ini
+    bacaGerak(daftar, &total);
+    tampilTabelGerak(daftar, total);
+
+    printf("\nIngin mengisi koordinat gerak baru? (Y/T): ");
+    scanf(" %c", &pil); // butuh spasi sebelum %c supaya menangani sisa buffer dari enter
+
+    // jika pilihan bukan ya, maka penambahan koordinat dibatalkan
+    if (pil != 'Y' && pil != 'y') {
+        printf("Penambahan gerak dibatalkan.\n");
+        return;
+    }
+
+    Gerak baru;
+
+    // input data gerak baru dari user
+    printf("\n======== Tambah Gerak ========\n");
+    printf("Masukkan koordinat x gerak: "); scanf("%d", &baru.x);
+    printf("Masukkan koordinat y gerak: "); scanf("%d", &baru.y);
+
+    // membersihkan buffer sisa input
+    while (getchar() != '\n');
+
+    // menggunakan fungsi inputGerak 
+    inputGerak(baru.x, baru.y);
 }
 
 // === BAGIAN 4 - DATA SORTER & VALIDASI ===a
