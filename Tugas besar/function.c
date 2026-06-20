@@ -350,11 +350,164 @@ void tampilMenu() {
     printf("  >> Pilih menu (1-4): ");
 }
 
-// Taruh ini di paling bawah function.c
+void wait(float x) {
+    time_t start_t, current;
+    time(&start_t);
+    do {
+        time(&current);
+    } while (difftime(current, start_t) < x);
+}
+
+
+void inisialisasiPapan(char papan[][lebar_papan], int panjang, int lebar) {
+    int i, j;
+    for (i = 0; i < panjang; i++)
+        for (j = 0; j < lebar; j++)
+            papan[i][j] = ' ';
+}
+ 
+void tempatkanHadiah(char papan[][lebar_papan], Hadiah arr[], int n) {
+    int i, k;
+    for (i = 0; i < n; i++) {
+        int  baris = arr[i].y;
+        int  kolom = arr[i].x;
+        char label[60];
+ 
+        sprintf(label, "%s%d", arr[i].nama, arr[i].skor);
+ 
+        for (k = 0; label[k] != '\0' && (kolom + k) < lebar_papan - 1; k++)
+            papan[baris][kolom + k] = label[k];
+    }
+}
+ 
+void cetakPapan(char papan[][lebar_papan], int panjang, int lebar, int skor) {
+    int i, j;
+ 
+    /* Batas atas */
+    printf("|");
+    for (j = 0; j < lebar; j++) printf("-");
+    printf("|\n");
+ 
+    /* Isi: loop luar = baris, loop dalam = kolom */
+    for (i = 0; i < panjang; i++) {
+        printf("|");
+        for (j = 0; j < lebar; j++)
+            printf("%c", papan[i][j]);
+        printf("|\n");
+    }
+ 
+    /* Batas bawah */
+    printf("|");
+    for (j = 0; j < lebar; j++) printf("-");
+    printf("|\n");
+ 
+    printf("Skor O: %d\n", skor);
+}
+ 
+int cekCollision(Hadiah arr[], int n, int ox, int oy, int *idxHit) {
+    int i;
+    for (i = 0; i < n; i++) {
+        if (arr[i].x == ox && arr[i].y == oy) {
+            *idxHit = i;
+            return 1;
+        }
+    }
+    return 0;
+}
+ 
+static void hapusLabelDariPapan(char papan[][lebar_papan], Hadiah *h) {
+    char label[60];
+    int  k;
+    sprintf(label, "%s%d", h->nama, h->skor);
+    for (k = 0; label[k] != '\0' && (h->x + k) < lebar_papan - 1; k++)
+        papan[h->y][h->x + k] = ' ';
+}
+ 
+static void hapusHadiahDiIndex(Hadiah arr[], int *n, int idx) {
+    int i;
+    for (i = idx; i < (*n) - 1; i++)
+        arr[i] = arr[i + 1];
+    (*n)--;
+}
+ 
+/* 
+   Alur :
+     1. Inisialisasi papan + tempatkan semua hadiah
+     2. Tampilkan papan awal
+     3. Loop tiap langkah gerak :
+          a. Hapus O dari posisi sebelumnya
+          b. Cek collision → makan hadiah jika kena
+          c. Tempatkan O di posisi baru
+          d. Bersihkan layar → cetakPapan → wait(0.3)
+     4. Animasi selesai → kembali ke menu
+ */
+
 void simulasiLiteO(Hadiah list_hadiah[], int jh, Gerak list_gerak[], int jg) {
-    printf("\n=== SIMULASI LITE O ===");
-    printf("\n[Sistem] Fungsi simulasi masih kosong/dalam pengembangan.\n");
-    printf("Tekan ENTER untuk kembali ke menu...");
-    while(getchar() != '\n');
+    /* Salin array agar tidak merusak data asli di main */
+    Hadiah hadiah[MAX_HADIAH];
+    int    nHadiah = jh;
+    int    step, idx;
+    int    i;
+ 
+    for (i = 0; i < jh; i++) hadiah[i] = list_hadiah[i];
+ 
+    if (jg == 0) {
+        printf("\n[!] File tgerak kosong. Isi gerak O dulu lewat Menu 2.\n");
+        printf("Tekan ENTER untuk kembali...");
+        while (getchar() != '\n');
+        getchar();
+        return;
+    }
+ 
+    /* Inisialisasi papan */
+    char papan[panjang_papan][lebar_papan];
+    inisialisasiPapan(papan, panjang_papan, lebar_papan);
+    tempatkanHadiah(papan, hadiah, nHadiah);
+ 
+    int skor  = 0;
+    int prevX = -1, prevY = -1;
+ 
+    /* Tampilan papan awal sebelum O bergerak */
+    system("cls");
+    cetakPapan(papan, panjang_papan, lebar_papan, skor);
+    wait(0.6f);
+ 
+    /* Loop animasi */
+    for (step = 0; step < jg; step++) {
+        int ox = list_gerak[step].x;
+        int oy = list_gerak[step].y;
+ 
+        /* Validasi koordinat dalam batas papan */
+        if (!cekValidasiGerak(ox, oy)) {
+            printf("[SKIP] posisi (%d,%d) di luar papan\n", ox, oy);
+            continue;
+        }
+ 
+        /* a. Hapus O dari posisi sebelumnya */
+        if (prevX >= 0 && prevY >= 0)
+            papan[prevY][prevX] = ' ';
+ 
+        /* b. Cek collision → makan hadiah */
+        if (cekCollision(hadiah, nHadiah, ox, oy, &idx)) {
+            skor += hadiah[idx].skor;
+            hapusLabelDariPapan(papan, &hadiah[idx]);
+            hapusHadiahDiIndex(hadiah, &nHadiah, idx);
+        }
+ 
+        /* c. Tempatkan O di posisi baru */
+        papan[oy][ox] = 'O';
+        prevX = ox;
+        prevY = oy;
+ 
+        /* d. Render ulang */
+        system("cls");
+        cetakPapan(papan, panjang_papan, lebar_papan, skor);
+        wait(0.3f);
+    }
+ 
+    /* Tampilan akhir tetap muncul, lalu kembali ke menu */
+    printf("\n Animasi selesai! Skor akhir O: %d\n", skor);
+    printf(" Tekan ENTER untuk kembali ke menu...");
+    while (getchar() != '\n');
     getchar();
 }

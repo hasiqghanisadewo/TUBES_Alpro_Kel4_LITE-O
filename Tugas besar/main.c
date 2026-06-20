@@ -28,8 +28,8 @@ int main() {
                 break;
 
              case 3:
-                 simulasiLiteO(daftar_hadiah, jumlah_hadiah, daftar_gerak, jumlah_gerak);
-                 break;
+                simulasiLiteO(daftar_hadiah, jumlah_hadiah, daftar_gerak, jumlah_gerak);
+                break;
             
              case 4:
                 system("cls");

@@ -63,4 +63,11 @@ int cekValidasiGerak(int x, int y);
 void tampilMenu(); // DISESUAIKAN: Mengganti 'void menu()' agar sinkron dengan function.c
 void simulasiLiteO(Hadiah list_hadiah[], int jh, Gerak list_gerak[], int jg); 
 
+
+// FUNGSI TAMBAHAN UNTUK SIMULASI
+void inisialisasiPapan(char papan[][lebar_papan], int panjang, int lebar);
+void tempatkanHadiah(char papan[][lebar_papan], Hadiah arr[], int n);
+void cetakPapan(char papan[][lebar_papan], int panjang, int lebar, int skor);
+int  cekCollision(Hadiah arr[], int n, int ox, int oy, int *idxHit);
+
 #endif
