@@ -6,6 +6,15 @@
 #include <stdlib.h>
 #include <time.h>
 
+//WARNA
+#define RESET "\033[0m" 
+#define BOLD "\033[1m"
+#define CYAN "\033[36m"
+#define YELLOW "\033[33m"
+#define GREEN "\033[32m"
+#define RED "\033[31m"
+#define WHITE "\033[37m"
+
 // KONSTANTA YANG AKAN DIGUNAKAN
 #define MAX_HADIAH 100
 #define MAX_GERAK 100
