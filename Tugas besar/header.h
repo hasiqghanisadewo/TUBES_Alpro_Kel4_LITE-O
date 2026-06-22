@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-// Konstanta yang akan dipakai
+// KONSTANTA YANG AKAN DIGUNAKAN
 #define MAX_HADIAH 100
 #define MAX_GERAK 100
 #define Selesai "##"
@@ -15,7 +15,7 @@
 #define panjang_papan 20
 #define lebar_papan 50
 
-// Struktur buat penempatan hadiah
+// STRUKTUR BUAT PENEMPATAN HADIAH
 typedef struct {
     int x;
     int y;
@@ -23,16 +23,14 @@ typedef struct {
     int skor;
 } Hadiah;
 
-// Struktur buat gerak
+// STRUKTUR BUAT GERAK O
 typedef struct {
     int x;
     int y;
 } Gerak;
 
-// Fungsi animasi dari pdf
-void wait(float x);
 
-// Mesin Abstrak
+// MESIN ABSTRAK
 void start(char* nama_file);
 void baca(char* kata_output);
 int endKata();
@@ -59,8 +57,15 @@ void urutkanHadiah(Hadiah arr[], int n);
 int cekValidasiGerak(int x, int y);
 
 
-// UI & SIMULASI
+// UI MENU
 void tampilMenu(); // DISESUAIKAN: Mengganti 'void menu()' agar sinkron dengan function.c
-void simulasiLiteO(Hadiah list_hadiah[], int jh, Gerak list_gerak[], int jg); 
+
+
+// SIMULASI LITE O
+void wait(float x); // FUNGSI ANIMASI DARI PDF
+void inisialisasiPapan(char papan[][lebar_papan], int panjang, int lebar);
+void tempatkanHadiah(char papan[][lebar_papan], Hadiah arr[], int n);
+void cetakPapan(char papan[][lebar_papan], int panjang, int lebar, int skor);
+int  cekCollision(Hadiah arr[], int n, int ox, int oy, int *idxHit);
 
 #endif
