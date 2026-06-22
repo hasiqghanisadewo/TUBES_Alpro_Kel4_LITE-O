@@ -6,16 +6,19 @@
 #include <stdlib.h>
 #include <time.h>
 
-// Konstanta yang akan dipakai
+// KONSTANTA YANG AKAN DIGUNAKAN
 #define MAX_HADIAH 100
 #define MAX_GERAK 100
 #define Selesai "##"
 
-// Ukuran papan simulasi
-#define panjang_papan 20
-#define lebar_papan 50
+// SISTEM WARNA ANSI
+#define RESET               "\033[0m"
+#define WARNA_O             "\033[1;33m"   // Kuning terang (Karakter O)
+#define WARNA_PAPAN         "\033[1;34m"   // Biru terang (Batas papan)
+#define WARNA_SKOR          "\033[1;33m"   // Kuning terang (Teks Skor)
+#define JUMLAH_WARNA_HADIAH 4              // Jumlah warna yang tersedia untuk hadiah
 
-// Struktur buat penempatan hadiah
+// STRUKTUR BUAT PENEMPATAN HADIAH
 typedef struct {
     int x;
     int y;
@@ -23,16 +26,14 @@ typedef struct {
     int skor;
 } Hadiah;
 
-// Struktur buat gerak
+// STRUKTUR BUAT GERAK O
 typedef struct {
     int x;
     int y;
 } Gerak;
 
-// Fungsi animasi dari pdf
-void wait(float x);
 
-// Mesin Abstrak
+// MESIN ABSTRAK
 void start(char* nama_file);
 void baca(char* kata_output);
 int endKata();
@@ -56,11 +57,19 @@ void urutkanHadiah(Hadiah arr[], int n);
 
 
 // VALIDASI
-int cekValidasiGerak(int x, int y);
+int cekValidasiGerak(int x, int y, int panjang, int lebar);
 
 
-// UI & SIMULASI
+// UI MENU
 void tampilMenu(); // DISESUAIKAN: Mengganti 'void menu()' agar sinkron dengan function.c
-void simulasiLiteO(Hadiah list_hadiah[], int jh, Gerak list_gerak[], int jg); 
+void simulasiLiteO(Hadiah list_hadiah[], int jh, Gerak list_gerak[], int jg); //untuk main.c, sesuai dengan function.c lu (lu: Hadiah list_hadiah[], int jh, Gerak list_gerak[], int jg)
+
+// SIMULASI LITE O
+void wait(float x); // FUNGSI ANIMASI DARI PDF
+void inisialisasiPapan(int panjang, int lebar, char papan[panjang][lebar]);
+void tempatkanHadiah(int panjang, int lebar, char papan[panjang][lebar], Hadiah arr[], int n);
+void cetakPapan(int panjang, int lebar, char papan[panjang][lebar], int skor, Hadiah arr[], int n);
+int  cekCollision(Hadiah arr[], int n, int ox, int oy, int *idxHit);
+
 
 #endif
