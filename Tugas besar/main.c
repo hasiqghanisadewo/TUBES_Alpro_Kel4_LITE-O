@@ -28,8 +28,8 @@ int main() {
                 break;
 
              case 3:
-                 simulasiLiteO(daftar_hadiah, jumlah_hadiah, daftar_gerak, jumlah_gerak);
-                 break;
+                simulasiLiteO(daftar_hadiah, jumlah_hadiah, daftar_gerak, jumlah_gerak);
+                break;
             
              case 4:
                 system("cls");
@@ -37,8 +37,8 @@ int main() {
                 return 0;
 
             default:
-                printf("\n [!] Pilihan tidak valid. Masukkan angka 1-4.\n");
-                printf(" Tekan ENTER untuk kembali...");
+                printf("\n !!! Pilihan gaada nih. Masukkin angka 1-4.\n");
+                printf(" Tekan ENTER buat kembali...");
                 while(getchar() != '\n');
                 getchar();
                 break;
