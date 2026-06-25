@@ -81,12 +81,4 @@ void cetakPapan(int panjang, int lebar, char papan[panjang][lebar], int skor, Ha
 int  cekCollision(Hadiah arr[], int n, int ox, int oy, int *idxHit);
 
 
-
-// SIMULASI LITE O
-void wait(float x); // FUNGSI ANIMASI DARI PDF
-void inisialisasiPapan(char papan[][lebar_papan], int panjang, int lebar);
-void tempatkanHadiah(char papan[][lebar_papan], Hadiah arr[], int n);
-void cetakPapan(char papan[][lebar_papan], int panjang, int lebar, int skor);
-int  cekCollision(Hadiah arr[], int n, int ox, int oy, int *idxHit);
-
 #endif
