@@ -6,6 +6,15 @@
 #include <stdlib.h>
 #include <time.h>
 
+// WARNA ANSI
+#define RESET   "\033[0m"
+#define BOLD    "\033[1m"
+#define CYAN    "\033[36m"
+#define YELLOW  "\033[33m"
+#define GREEN   "\033[32m"
+#define RED     "\033[31m"
+#define WHITE   "\033[37m"
+
 // KONSTANTA YANG AKAN DIGUNAKAN
 #define MAX_HADIAH 100
 #define MAX_GERAK 100
@@ -71,5 +80,13 @@ void tempatkanHadiah(int panjang, int lebar, char papan[panjang][lebar], Hadiah 
 void cetakPapan(int panjang, int lebar, char papan[panjang][lebar], int skor, Hadiah arr[], int n);
 int  cekCollision(Hadiah arr[], int n, int ox, int oy, int *idxHit);
 
+
+
+// SIMULASI LITE O
+void wait(float x); // FUNGSI ANIMASI DARI PDF
+void inisialisasiPapan(char papan[][lebar_papan], int panjang, int lebar);
+void tempatkanHadiah(char papan[][lebar_papan], Hadiah arr[], int n);
+void cetakPapan(char papan[][lebar_papan], int panjang, int lebar, int skor);
+int  cekCollision(Hadiah arr[], int n, int ox, int oy, int *idxHit);
 
 #endif
