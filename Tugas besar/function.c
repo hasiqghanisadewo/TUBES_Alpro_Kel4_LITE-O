@@ -2,6 +2,13 @@
 #include <string.h> 
 #include "header.h"
 
+static const char* WARNA_HADIAH[] = {
+    "\033[1;31m",   // Index 0: Merah
+    "\033[1;36m",   // Index 1: Cyan
+    "\033[1;35m",   // Index 2: Magenta
+    "\033[0;33m"    // Index 3: Kuning redup
+};
+
 FILE *f; 
 // bagian 1 Mesin Abstrak
 void start(char* nama_file) {
@@ -200,16 +207,16 @@ void tulisSemuaGerak(Gerak arr[], int n) {
 // menampilkan data gerak O dalam bentuk tabel
 void tampilTabelGerak(Gerak arr[], int n) {
     printf("Isi gerak O saat ini:\n");
-    printf("----------\n");
-    printf("| %-3s | %-3s |\n", "x", "y");
-    printf("----------\n");
+    printf("-------------\n");
+    printf("|  %-3s|  %-3s|\n", "x", "y");
+    printf("-------------\n");
     if (n == 0) {   // jika  belum ada data gerak
         printf("| (kosong)   |\n");
     } else {        
         for (int i = 0; i < n; i++) // menampilkan data gerak dengan perulangan
             printf("| %-3d | %-3d |\n", arr[i].x, arr[i].y);
     }
-    printf("----------\n");
+    printf("-------------\n");
 }
 
 // fungsi yang membantu menyisipkan koordinat baru lewat array
@@ -291,15 +298,14 @@ void urutkanHadiah(Hadiah arr[], int n)
 }
 
 // Untuk Validasi apakah koordinat masih berada di dalam papan
-int cekValidasiGerak(int x, int y)
+int cekValidasiGerak(int x, int y, int panjang, int lebar)
 {
-    //memastikan variabel panjang_papan dan lebar_papan sudah dideklarasikan di header.h
-    if(x < 0 || x >= panjang_papan)
+    if(x < 0 || x >= lebar)
     {
         return 0;
     }
 
-    if(y < 0 || y >= lebar_papan)
+    if(y < 0 || y >= panjang)
     {
         return 0;
     }
@@ -353,16 +359,15 @@ void tampilMenu() {
 }
     
 void wait(float x) {
-    time_t start;
-    time_t current;
-    time(&start);
+    time_t start_t, current;
+    time(&start_t);
     do {
         time(&current);
-    } while (difftime(current, start) < x);
+    } while (difftime(current, start_t) < x);
 }
  
 /* inisialisasiPapan (isi seluruh cell papan dengan spasi) */
-void inisialisasiPapan(char papan[][lebar_papan], int panjang, int lebar) {
+void inisialisasiPapan(int panjang  , int lebar, char papan[panjang][lebar]) {
     int i, j;
     for (i = 0; i < panjang; i++)
         for (j = 0; j < lebar; j++)
@@ -370,7 +375,7 @@ void inisialisasiPapan(char papan[][lebar_papan], int panjang, int lebar) {
 }
  
 /* tempatkanHadiah, tulis label hadiah (nama+skor) ke papan */
-void tempatkanHadiah(char papan[][lebar_papan], Hadiah arr[], int n) {
+void tempatkanHadiah(int panjang, int lebar, char papan[panjang][lebar], Hadiah arr[], int n) {
     int i, k;
     for (i = 0; i < n; i++) {
         int  baris = arr[i].y;
@@ -379,38 +384,59 @@ void tempatkanHadiah(char papan[][lebar_papan], Hadiah arr[], int n) {
  
         sprintf(label, "%s%d", arr[i].nama, arr[i].skor);
  
-        for (k = 0; label[k] != '\0' && (kolom + k) < lebar_papan - 1; k++)
+        for (k = 0; label[k] != '\0' && (kolom + k) < lebar - 1; k++)
             papan[baris][kolom + k] = label[k];
     }
 }
  
-/* cetakPapan, render/cetak papan ke layar  */
-void cetakPapan(char papan[][lebar_papan], int panjang, int lebar, int skor) {
-    int i, j;
+void cetakPapan(int panjang, int lebar, char papan[panjang][lebar], int skor, Hadiah arr[], int n) {
+    int i, j, k;
  
     /* Batas atas */
-    printf("|");
+    printf(WARNA_PAPAN "|");
     for (j = 0; j < lebar; j++) printf("-");
-    printf("|\n");
+    printf("|" RESET "\n");
  
     /* Isi: loop luar = baris, loop dalam = kolom */
     for (i = 0; i < panjang; i++) {
-        printf("|");
-        for (j = 0; j < lebar; j++)
-            printf("%c", papan[i][j]);
-        printf("|\n");
+        printf(WARNA_PAPAN "|" RESET);
+        for (j = 0; j < lebar; j++) {
+            char ch = papan[i][j];
+            
+            if (ch == 'O') {
+                printf(WARNA_O "%c" RESET, ch);
+            } else if (ch != ' ') {
+                // Cari karakter ini milik hadiah index ke berapa biar warnanya rata
+                int idx_warna = 0; 
+                for (k = 0; k < n; k++) {
+                    // Jika baris sama dan kolom masuk dalam rentang kata hadiah
+                    if (i == arr[k].y && j >= arr[k].x) {
+                        char label[60];
+                        sprintf(label, "%s%d", arr[k].nama, arr[k].skor);
+                        int len = strlen(label);
+                        if (j < arr[k].x + len) {
+                            // Pseudo-acak berdasarkan huruf kedua dan koordinat
+                            idx_warna = (arr[k].nama[1] + (arr[k].x * 3) + (arr[k].y * 7)) % JUMLAH_WARNA_HADIAH; 
+                            break;
+                        }
+                    }
+                }
+                printf("%s%c" RESET, WARNA_HADIAH[idx_warna], ch);
+            } else {
+                printf("%c", ch);
+            }
+        }
+        printf(WARNA_PAPAN "|" RESET "\n");
     }
  
     /* Batas bawah */
-    printf("|");
+    printf(WARNA_PAPAN "|");
     for (j = 0; j < lebar; j++) printf("-");
-    printf("|\n");
+    printf("|" RESET "\n");
  
-    printf("Skor O: %d\n", skor);
+    printf(WARNA_SKOR "Skor O: %d" RESET "\n", skor);
 }
  
-/* cekCollision (cek tabrakan, benturan), cek apakah posisi O (ox,oy) mengenai hadiah
-   Return 1 + index jika kena, return 0 jika tidak */
 int cekCollision(Hadiah arr[], int n, int ox, int oy, int *idxHit) {
     int i;
     for (i = 0; i < n; i++) {
@@ -421,17 +447,15 @@ int cekCollision(Hadiah arr[], int n, int ox, int oy, int *idxHit) {
     }
     return 0;
 }
- 
-/* hapusLabelDariPapan, timpa karakter label dengan spasi */
-static void hapusLabelDariPapan(char papan[][lebar_papan], Hadiah *h) { /* (fungsi bantu, tidak dideklarasikan di header) */
+
+static void hapusLabelDariPapan(int lebar, char papan[][lebar], Hadiah *h) {
     char label[60];
     int  k;
     sprintf(label, "%s%d", h->nama, h->skor);
-    for (k = 0; label[k] != '\0' && (h->x + k) < lebar_papan - 1; k++)
+    for (k = 0; label[k] != '\0' && (h->x + k) < lebar - 1; k++)
         papan[h->y][h->x + k] = ' ';
 }
  
-/* hapusHadiahDiIndex (index yang dimaksud adalah index hadiah yang akan dihapus), hapus satu elemen array (geser kiri) */
 static void hapusHadiahDiIndex(Hadiah arr[], int *n, int idx) {
     int i;
     for (i = idx; i < (*n) - 1; i++)
@@ -439,22 +463,23 @@ static void hapusHadiahDiIndex(Hadiah arr[], int *n, int idx) {
     (*n)--;
 }
  
-/* Alur Berjalan simulasi:
+/* Alur :
      1. Inisialisasi papan + tempatkan semua hadiah
      2. Tampilkan papan awal
      3. Loop tiap langkah gerak :
           a. Hapus O dari posisi sebelumnya
-          b. Cek collision -> makan hadiah jika kena
+          b. Cek collision → makan hadiah jika kena
           c. Tempatkan O di posisi baru
-          d. Bersihkan layar -> cetakPapan -> wait(0.3)
-     4. Animasi selesai -> kembali ke menu */
+          d. Bersihkan layar → cetakPapan → wait(0.3)
+     4. Animasi selesai → kembali ke menu
+ */
 
 void simulasiLiteO(Hadiah list_hadiah[], int jh, Gerak list_gerak[], int jg) {
-    /* Salin array agar tidak merusak data asli di main */
     Hadiah hadiah[MAX_HADIAH];
     int    nHadiah = jh;
     int    step, idx;
     int    i;
+    int    panjang, lebar; 
  
     for (i = 0; i < jh; i++) hadiah[i] = list_hadiah[i];
  
@@ -465,54 +490,60 @@ void simulasiLiteO(Hadiah list_hadiah[], int jh, Gerak list_gerak[], int jg) {
         getchar();
         return;
     }
+
+    // Input ukuran dinamis
+    system("cls");
+    printf(" Masukkan panjang papan (baris) : ");
+    scanf("%d", &panjang);
+    printf(" Masukkan lebar papan (kolom)   : ");
+    scanf("%d", &lebar);
+    while (getchar() != '\n');
  
-    /* Inisialisasi papan */
-    char papan[panjang_papan][lebar_papan];
-    inisialisasiPapan(papan, panjang_papan, lebar_papan);
-    tempatkanHadiah(papan, hadiah, nHadiah);
+    // Inisialisasi matriks dinamis
+    char papan[panjang][lebar];
+    inisialisasiPapan(panjang, lebar, papan);
+    tempatkanHadiah(panjang, lebar, papan, hadiah, nHadiah);
  
     int skor  = 0;
     int prevX = -1, prevY = -1;
  
-    /* Tampilan papan awal sebelum O bergerak */
+    // Sembunyikan kursor terminal agar tidak berkedip
+    printf("\033[?25l");
     system("cls");
-    cetakPapan(papan, panjang_papan, lebar_papan, skor);
+    
+    cetakPapan(panjang, lebar, papan, skor, hadiah, nHadiah);
     wait(0.6f);
  
-    /* Loop animasi */
     for (step = 0; step < jg; step++) {
         int ox = list_gerak[step].x;
         int oy = list_gerak[step].y;
  
-        /* Validasi koordinat dalam batas papan */
-        if (!cekValidasiGerak(ox, oy)) {
-            printf("[SKIP] posisi (%d,%d) di luar papan\n", ox, oy);
-            continue;
+        // Validasi menggunakan ukuran dinamis
+        if (!cekValidasiGerak(ox, oy, panjang, lebar)) {
+            continue; 
         }
  
-        /* a. Hapus O dari posisi sebelumnya */
         if (prevX >= 0 && prevY >= 0)
             papan[prevY][prevX] = ' ';
  
-        /* b. Cek collision → makan hadiah */
         if (cekCollision(hadiah, nHadiah, ox, oy, &idx)) {
             skor += hadiah[idx].skor;
-            hapusLabelDariPapan(papan, &hadiah[idx]);
+            hapusLabelDariPapan(lebar, papan, &hadiah[idx]);
             hapusHadiahDiIndex(hadiah, &nHadiah, idx);
         }
  
-        /* c. Tempatkan O di posisi baru */
         papan[oy][ox] = 'O';
         prevX = ox;
         prevY = oy;
  
-        /* d. Render ulang */
-        system("cls");
-        cetakPapan(papan, panjang_papan, lebar_papan, skor);
+        // Mengembalikan kursor ke pojok kiri atas tanpa membersihkan layar (anti-flicker)
+        printf("\033[H");
+        cetakPapan(panjang, lebar, papan, skor, hadiah, nHadiah);
         wait(0.3f);
     }
  
-    /* Tampilan akhir tetap muncul, lalu kembali ke menu */
+    // Munculkan kembali kursor terminal
+    printf("\033[?25h");
     printf("\n Animasi selesai! Skor akhir O: %d\n", skor);
     printf(" Tekan ENTER untuk kembali ke menu...");
     while (getchar() != '\n');
