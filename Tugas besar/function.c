@@ -318,8 +318,8 @@ void tampilMenu() {
     system("cls");
 
     printf("\n");
-    printf(CYAN " ========================================================================= \n" RESET);
-    printf(CYAN "  #"RESET "                                                               #\n" RESET);
+    printf(CYAN "  # " RESET "============================================================== \n" RESET);
+    printf(CYAN "  # "RESET "                                                               #\n" RESET);
     printf(CYAN "  # "YELLOW ":::        ::::::::::: ::::::::::: ::::::::::       ::::::::  " CYAN "#\n" RESET);
     printf(CYAN "  # "YELLOW ":+:            :+:         :+:     :+:             :+:    :+: " CYAN "#\n" RESET);
     printf(CYAN "  # "YELLOW "+:+            +:+         +:+     +:+             +:+    +:+ " CYAN "#\n" RESET);
@@ -327,9 +327,9 @@ void tampilMenu() {
     printf(CYAN "  # "YELLOW "+#+            +#+         +#+     +#+             +#+    +#+ " CYAN "#\n" RESET);
     printf(CYAN "  # "YELLOW "#+#            #+#         #+#     #+#             #+#    #+# " CYAN "#\n" RESET);
     printf(CYAN "  # "YELLOW "##########  ##########     ###     ##########       ########  " CYAN "#\n" RESET);
-    printf(CYAN "  #" RESET "                                                               #\n" RESET);
-    printf(CYAN "  #      " RESET "=======================================================  #\n" RESET);
-    printf(CYAN "  #" RESET "                                                               #\n" RESET);
+    printf(CYAN "  # " RESET "                                                               #\n" RESET);
+    printf(CYAN "  # " RESET "============================================================== #\n" RESET);
+    printf(CYAN "  # " RESET "                                                               #\n" RESET);
     printf(CYAN "  # " GREEN "        :::    ::: :::::::::: :::                 :::         " CYAN "#\n" RESET);
     printf(CYAN "  # " GREEN "        #:+:   :+:  :+:        :+:                :+:         " CYAN "#\n" RESET);
     printf(CYAN "  # " GREEN "        #+:+  +:+   +:+        +:+               +:+ +:+      " CYAN "#\n" RESET);  
@@ -337,23 +337,21 @@ void tampilMenu() {
     printf(CYAN "  # " GREEN "        #+#+  +#+   +#+        +#+             +#+#+#+#+#+    " CYAN "#\n" RESET);
     printf(CYAN "  # " GREEN "        ##+#   #+#  #+#        #+#                   #+#      " CYAN "#\n" RESET);
     printf(CYAN "  # " GREEN "        ####    ### ########## ##########            ###      " CYAN "#\n" RESET);
-    printf(CYAN "  #" RESET "                                                                #\n" RESET);                                
-    printf(CYAN "  #" RESET "          " BOLD WHITE ">> KELOMPOK  4 <<" RESET CYAN "        " CYAN "#\n" RESET);
-    printf(CYAN "  #" RESET "                                                               " CYAN "#\n" RESET);
-    printf(CYAN "  ================================================================================= \n" RESET);
-    printf("\n");
-    printf(CYAN "  /==================================================================================\\n" RESET);
-    printf(CYAN "  |" BOLD WHITE "                        MAIN  MENU                    " RESET CYAN "| \n" RESET);
-    printf(CYAN "  |==================================================================================| \n" RESET);
-    printf(CYAN "  |" RESET "                                                              " CYAN "| \n" RESET);
-    printf("\n");
-    printf(CYAN "  |" RESET "   " YELLOW BOLD "[ 1 ]" RESET GREEN "   Tambah Hadiah" RESET "  " CYAN "| \n" RESET);
-    printf(CYAN "  |" RESET "   " YELLOW BOLD "[ 2 ]" RESET GREEN "   Tambah Gerak" RESET "   " CYAN "| \n" RESET);
-    printf(CYAN "  |" RESET "   " YELLOW BOLD "[ 3 ]" RESET GREEN "   Simulasi Lite O" RESET "" CYAN "| \n" RESET);
-    printf(CYAN "  |" RESET "   " YELLOW BOLD "[ 4 ]" RESET GREEN "   Keluar" RESET "         " CYAN "| \n" RESET);
-    printf("\n");
-    printf(CYAN "  |" RESET "                                                                 " CYAN "| \n" RESET);
-    printf(CYAN "  \\=================================================================================/ \n" RESET);
+    printf(CYAN "  # " RESET "                                                                #\n" RESET);                                
+    printf(CYAN "  #" RESET "                     " BOLD WHITE ">> KELOMPOK 4 <<" RESET "                     " CYAN "#\n" RESET);
+    printf(CYAN "  #" RESET "                                                                                #\n");
+    printf(CYAN "  =================================================================================\n" RESET);
+
+    printf(CYAN "\n  /================================================================================\\n" RESET);
+    printf(CYAN "  |" RESET BOLD WHITE "                        MAIN MENU                        " RESET CYAN "| \n" RESET);
+    printf(CYAN "  |================================================================================|\n" RESET);
+    printf(CYAN "  |" RESET "                                                                                " CYAN "| \n" RESET);
+    printf(CYAN "  |" RESET "   " YELLOW BOLD "[ 1 ]" RESET GREEN "  Tambah Hadiah" RESET "                                                       " CYAN "| \n" RESET);
+    printf(CYAN "  |" RESET "   " YELLOW BOLD "[ 2 ]" RESET GREEN "  Tambah Gerak" RESET "                                                       " CYAN "| \n" RESET);
+    printf(CYAN "  |" RESET "   " YELLOW BOLD "[ 3 ]" RESET GREEN "  Simulasi Lite O" RESET "                                                 " CYAN "| \n" RESET);
+    printf(CYAN "  |" RESET "   " YELLOW BOLD "[ 4 ]" RESET GREEN "  Keluar" RESET "                                                             " CYAN "| \n" RESET);
+    printf(CYAN "  |" RESET "                                                                                " CYAN "| \n" RESET);
+    printf(CYAN "  \\================================================================================/\n" RESET);
     printf("\n");
     printf(BOLD "  >> Pilih menu (1-4): " RESET);
 }
